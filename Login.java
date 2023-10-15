@@ -1,6 +1,9 @@
 import javax.swing.*;
 
 public class Login {
+
+    //Autor: Jeison Acevedo
+    //15-10-2023
     public static void main(String[] args) {
         // Crear un nuevo marco (ventana) de la aplicación
         JFrame frame = new JFrame("Login");
