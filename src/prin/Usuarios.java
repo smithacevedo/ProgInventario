@@ -1,7 +1,15 @@
 import javax.swing.*;
+
+import config.Conexion;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;;
 
 public class Usuarios {
 
@@ -29,11 +37,7 @@ public class Usuarios {
                 String password = new String(passwordField.getPassword());
                 String role = roleTextField.getText();
 
-                // Aquí puedes realizar acciones con los datos, como almacenarlos en una base de datos o imprimirlos en la consola.
-                System.out.println("Usuario ID: " + userId);
-                System.out.println("Nombre: " + userName);
-                System.out.println("Contraseña: " + password);
-                System.out.println("Rol: " + role);
+                insertUsuario(userId, userName, password, role);
             }
         });
 
@@ -50,4 +54,19 @@ public class Usuarios {
 
         frame.setVisible(true);
     }
-}
+
+    // Método para insertar un usuario en la tabla
+    private static void insertUsuario (String userId, String userName, String password, String role){
+        Conexion conexion = new Conexion();
+        try (Connection connection = conexion.getConnection()) {
+            String insertQuery = "INSERT INTO USUARIOS (UsuarioId, Nombre, Contraseña, Rol) VALUES (?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement.setString(1, userId);
+            preparedStatement.setString(2, userName);
+            preparedStatement.setString(3, password);
+            preparedStatement.setString(4, role);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+}}
