@@ -1,6 +1,7 @@
+package inventory.controller;
 import javax.swing.*;
 
-import config.Conexion;
+import inventory.config.Conexion;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -32,12 +33,12 @@ public class Usuarios {
 
         submitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String userId = idTextField.getText();
+                Integer userid = Integer.parseInt(idTextField.getText());
                 String userName = nameTextField.getText();
                 String password = new String(passwordField.getPassword());
                 String role = roleTextField.getText();
 
-                insertUsuario(userId, userName, password, role);
+                insertUsuario(userid, userName, password, role);
             }
         });
 
@@ -56,12 +57,13 @@ public class Usuarios {
     }
 
     // Método para insertar un usuario en la tabla
-    private static void insertUsuario (String userId, String userName, String password, String role){
+    private static void insertUsuario (Integer userId, String userName, String password, String role){
         Conexion conexion = new Conexion();
-        try (Connection connection = conexion.getConnection()) {
-            String insertQuery = "INSERT INTO USUARIOS (UsuarioId, Nombre, Contraseña, Rol) VALUES (?, ?, ?, ?)";
+        try {
+            Connection connection = conexion.getConnection();
+            String insertQuery = "INSERT INTO \"PI2\".usuarios (usuarioid, nombre, contraseña, rol) VALUES (?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
-            preparedStatement.setString(1, userId);
+            preparedStatement.setInt(1, userId);
             preparedStatement.setString(2, userName);
             preparedStatement.setString(3, password);
             preparedStatement.setString(4, role);
